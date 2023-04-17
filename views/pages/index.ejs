@@ -1,0 +1,39 @@
+<%- include('../partials/head') %>
+
+<body>
+  <p>Authenticated!</p>
+  <p>Socket ID: <span id="socketId"></span></p>
+  <p>Username: <span id="username"></span></p>
+  <form action="/logout" method="post">
+    <div>
+      <input type="submit" value="Log out" />
+    </div>
+  </form>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const socketIdSpan = document.getElementById("socketId");
+    const usernameSpan = document.getElementById("username");
+
+    socket.on("connect", () => {
+      socketIdSpan.innerText = socket.id;
+
+      socket.emit("whoami", (username) => {
+        usernameSpan.innerText = username;
+      });
+    });
+  </script>
+</body>
+<!-- <body>
+  <main>
+    <section>
+      <h1>Le Chat <span>waar je niet weet met wie je chat...</span></h1>
+      <ul></ul>
+      <form>
+        <input type="text" autocomplete="off" />
+        <button><span>Send</span></button>
+      </form>
+    </section>
+  </main>
+</body> -->
+<!--<%- include('../partials/footer') %> -->
