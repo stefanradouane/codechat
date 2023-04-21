@@ -78,11 +78,21 @@ io.use((socket, next) => {
 io.on("connect", (socket) => {
   console.log(`new connection ${socket.id}`);
   socket.on("whoami", (cb) => {
-    cb(socket.request.user ? socket.request.user.username : "");
+    cb(socket.request.user ? socket.request.user.name : "");
+  });
+
+  socket.on("message", (msg) => {
+    io.emit("message", {
+      message: msg,
+      username: socket.request.user.name,
+    });
+  });
+
+  socket.on("code", (code) => {
+    io.emit("code", code);
   });
 
   const session = socket.request.session;
-  console.log(`saving sid ${socket.id} in session ${session.id}`);
   session.socketId = socket.id;
   session.save();
 });

@@ -2,21 +2,25 @@
   {
     "id": 1,
     "username": "johndoe",
-    "password": "qwerty"
+    "name": "John Doe",
+    "password": "j"
   },
   {
     "id": 2,
     "username": "janedoe",
-    "password": "azerty"
+    "name": "Jane Doe",
+    "password": "j"
   },
   {
     "id": 3,
     "username": "s",
+    "name": "Stefan",
     "password": "s"
   },
   {
     "id": 4,
     "username": "stefan",
+    "name": "Stefan",
     "password": "s"
   }
 ]

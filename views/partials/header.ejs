@@ -1,0 +1,9 @@
+<header class="header">
+  <%- include('../components/logo', {size:"small"}) %>
+  <h2 class="title title--h2">CodeChat</h2>
+  <p class="header__socket" id="socketId"></p>
+  <p class="header__profile" id="username"></p>
+  <form action="/logout" method="post">
+    <button class="cta cta--theme">Log out</button>
+  </form>
+</header>

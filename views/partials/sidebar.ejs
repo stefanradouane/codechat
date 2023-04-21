@@ -1,0 +1,23 @@
+<aside class="sidebar">
+  <nav class="nav">
+    <ul class="nav__list">
+      <li class="nav__list-item">
+        <button
+          class="nav__list-control <% if (active == "code") { %> nav__list-control--active<%}%>"
+          data-nav-control="code">
+          <%- include('../components/icon-file') %>
+        </button>
+      </li>
+      <li class="nav__list-item">
+        <button class="nav__list-control <% if (active == "chat") { %> nav__list-control--active<%}%>" data-nav-control="chat">
+          <%- include('../components/icon-chat') %>
+        </button>
+      </li>
+      <li class="nav__list-item">
+        <button class="nav__list-control">
+          <%- include('../components/icon-user') %>
+        </button>
+      </li>
+    </ul>
+  </nav>
+</aside>

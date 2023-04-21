@@ -1,12 +1,13 @@
 <%- include ("../partials/head") %>
 <body>
   <main class="login">
-    <%- include ("../components/logo") %>
-    <h1 class="title title--h1">Codemunity</h1>
+    <%- include ("../components/logo", {size:"big"}) %>
+    <h1 class="title title--h1">CodeChat</h1>
     <form action="/login" method="post">
       <label class="control"
         >Gebruikersnaam:
         <input
+          autocomplete="username"
           class="control__input"
           type="text"
           name="username"
@@ -15,6 +16,7 @@
       <label class="control"
         >Wachtwoord:
         <input
+          autocomplete="current-password"
           class="control__input"
           type="password"
           name="password"
