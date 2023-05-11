@@ -2,6 +2,8 @@
 import localStrategy from "passport-local";
 import passport from "passport";
 
+import fetch from "node-fetch";
+
 // const database = require("../model/database.json");
 // const passport = require("passport");
 // const localStrategy = require("passport-local");

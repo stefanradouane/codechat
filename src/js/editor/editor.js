@@ -4,17 +4,6 @@ import runScript from "./editor-run.js";
 
 const styleSelect = document.querySelector("[data-editor-style]");
 const defaultStyle = "abcdef";
-// const pages = [
-//   "home",
-//   "product",
-//   "lijst",
-//   "bestel",
-//   "faq",
-//   "contact",
-//   "overons",
-//   "portfolio",
-//   "blog",
-// ];
 
 if (styleSelect) {
   styleSelect.append(...styleOptions(defaultStyle));
