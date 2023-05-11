@@ -1,0 +1,32 @@
+.message {
+  display: flex;
+  flex-direction: column;
+  max-width: 460px;
+  width: fit-content;
+  min-width: 150px;
+  padding: 10px;
+  border-radius: 10px;
+  gap: 3px;
+  background-color: white;
+}
+
+.message--own {
+  align-self: flex-end;
+}
+
+.message__user {
+  font-family: var(--h-font);
+  color: var(--prim-color);
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.message__date {
+  font-size: 0.7rem;
+  color: #959595;
+}
+
+/* section ul > li {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  } */
