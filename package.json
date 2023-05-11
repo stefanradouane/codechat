@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
+    "start": "node server.js",
     "test": "node test.js",
     "build:js": "webpack --config webpack.config.cjs",
     "watch": "npm run build:js -- --watch"
