@@ -3,27 +3,33 @@
   <main class="login">
     <%- include ("../components/logo", {size:"big"}) %>
     <h1 class="title title--h1">CodeChat</h1>
+    <p>
+      Log in bij de chat met jouw naam. Jouw naam moet wel onderdeel zijn van de
+      <a target="_blank" href="https://whois.fdnd.nl/admin">whois fdnd api</a>.
+    </p>
     <form action="/login" method="post">
+      <% if (messages.error) {%>
+      <p><%= messages.error%></p>
+      <%}%>
       <label class="control"
-        >Gebruikersnaam:
+        >Naam:
         <input
-          autocomplete="username"
+          autocomplete="name"
           class="control__input"
           type="text"
-          name="username"
-          placeholder="Gebruikersnaam" />
+          name="name"
+          placeholder="Voornaam" />
       </label>
       <label class="control"
-        >Wachtwoord:
+        >Achternaam:
         <input
-          autocomplete="current-password"
+          autocomplete="surname"
           class="control__input"
-          type="password"
-          name="password"
-          placeholder="Wachtwoord" />
+          type="text"
+          name="surname"
+          placeholder="Achternaam" />
       </label>
       <button class="cta cta--theme">Log in</button>
-      <a class="anchor" href="#">Nog geen account? Registreer</a>
     </form>
   </main>
   <!-- <%- include('../partials/footer') %> -->

@@ -1,23 +1,12 @@
-// const express = require("express");
-// const app = express();
-// const server = require("http").createServer(app);
-// const port = process.env.PORT || 3000;
-
-// const session = require("express-session");
-// const bodyParser = require("body-parser");
-// const passport = require("./config/passport");
-// const routes = require("./routes/routes");
-
-// /*
-// https://socket.io/get-started/chat
-// */
-import { ifError } from "assert";
+/*******************************************************
+ * Import and define variables and constants
+ ********************************************************/
 import http from "http";
 import express from "express";
 import { Server } from "socket.io";
-import path from "path";
 import routes from "./routes/routes.js";
 import session from "express-session";
+import flash from "express-flash";
 import bodyParser from "body-parser";
 import passport from "./config/passport.js";
 
@@ -26,18 +15,22 @@ const server = http.createServer(app);
 const io = new Server(server);
 const port = process.env.PORT || 4242;
 
+const history = {};
+const historySize = 50;
+
 /*******************************************************
  * Middleware
  ********************************************************/
 // Set static folder
 app.use(express.static("./public"));
-
+app.use(flash());
 // Session
 const sessionMiddleware = session({
   secret: "changeit",
   resave: false,
   saveUninitialized: false,
 });
+
 app.use(sessionMiddleware);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
@@ -75,21 +68,44 @@ io.use((socket, next) => {
   }
 });
 
-io.on("connect", (socket) => {
+io.on("connection", (socket) => {
   console.log(`new connection ${socket.id}`);
-  socket.on("whoami", (cb) => {
-    cb(socket.request.user ? socket.request.user.name : "");
-  });
+  let v;
 
-  socket.on("message", (msg) => {
-    io.emit("message", {
-      message: msg,
-      username: socket.request.user.name,
+  async function emitConnections(data) {
+    v = data.map((ios) => {
+      return {
+        id: ios.id,
+        user: ios.request.user,
+        room: new URL(ios.handshake.headers.referer).searchParams.get("room"),
+      };
     });
+    io.emit("activeUsers", v);
+  }
+
+  io.fetchSockets().then((data) => {
+    emitConnections(data);
   });
 
-  socket.on("code", (code) => {
-    io.emit("code", code);
+  socket.on("whoami", (cb) => {
+    cb(socket.request.user ? socket.request.user : "");
+
+    socket.emit(
+      "history",
+      history[
+        new URL(socket.handshake.headers.referer).searchParams.get("room")
+      ]
+    );
+  });
+
+  socket.on("message", (message) => {
+    while (history[message.room]?.length > historySize) {
+      history.shift();
+    }
+    history[message.room] = !history[message.room] ? [] : history[message.room];
+    history[message.room].push(message);
+
+    io.emit("message", message);
   });
 
   const session = socket.request.session;

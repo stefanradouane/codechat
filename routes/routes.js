@@ -15,15 +15,12 @@ export default function routes(passport, io) {
   const router = Router();
 
   router.get("/", (req, res) => {
-    const isAuthenticated = !!req.user;
-    console.log(req.user);
-    if (isAuthenticated) {
-      console.log(`user is authenticated, session is ${req.session.id}`);
+    if (!!req.user) {
+      res.render("pages/index", { room: req.query.room });
     } else {
       res.cookie("connect.sid", "", { expires: new Date() });
-      console.log("unknown user");
+      res.render("pages/login");
     }
-    isAuthenticated ? res.render("pages/index") : res.render("pages/login");
   });
 
   router.post(
@@ -53,3 +50,57 @@ export default function routes(passport, io) {
 
   return router;
 }
+
+// <div
+//   class="cm-tooltip-autocomplete cm-tooltip cm-tooltip-below"
+//   style="position: fixed; top: 787.891px; left: 125.641px;">
+//   <ul
+//     id="cm-ac-5wpd"
+//     role="listbox"
+//     aria-expanded="true"
+//     aria-label="Completions">
+//     <li id="cm-ac-5wpd-0" role="option" aria-selected="true">
+//       <div
+//         class="cm-completionIcon cm-completionIcon-keyword"
+//         aria-hidden="true"></div>
+//       <span class="cm-completionLabel">
+//         <span class="cm-completionMatchedText">f</span>alse
+//       </span>
+//     </li>
+//     <li id="cm-ac-5wpd-1" role="option">
+//       <div
+//         class="cm-completionIcon cm-completionIcon-keyword"
+//         aria-hidden="true"></div>
+//       <span class="cm-completionLabel">
+//         <span class="cm-completionMatchedText">f</span>inally
+//       </span>
+//     </li>
+//     <li id="cm-ac-5wpd-2" role="option">
+//       <div
+//         class="cm-completionIcon cm-completionIcon-keyword"
+//         aria-hidden="true"></div>
+//       <span class="cm-completionLabel">
+//         <span class="cm-completionMatchedText">f</span>or
+//       </span>
+//       <span class="cm-completionDetail">loop</span>
+//     </li>
+//     <li id="cm-ac-5wpd-3" role="option">
+//       <div
+//         class="cm-completionIcon cm-completionIcon-keyword"
+//         aria-hidden="true"></div>
+//       <span class="cm-completionLabel">
+//         <span class="cm-completionMatchedText">f</span>or
+//       </span>
+//       <span class="cm-completionDetail">of loop</span>
+//     </li>
+//     <li id="cm-ac-5wpd-4" role="option">
+//       <div
+//         class="cm-completionIcon cm-completionIcon-keyword"
+//         aria-hidden="true"></div>
+//       <span class="cm-completionLabel">
+//         <span class="cm-completionMatchedText">f</span>unction
+//       </span>
+//       <span class="cm-completionDetail">definition</span>
+//     </li>
+//   </ul>
+// </div>;

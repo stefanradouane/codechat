@@ -2,11 +2,17 @@
 
 <body class="page">
   <%- include('../partials/header') %> <%- include('../partials/sidebar',
-  {active: "chat"}) %>
+  {active: "code"}) %>
 
   <main class="content">
-    <%- include('../partials/chat', {hidden: false}) %> <%-
-    include('../partials/code-editor', {hidden: true}) %>
+    <!-- prettier-ignore -->
+    <% if (room) { %> 
+    <%- include('../partials/users') %>
+    <%- include('../partials/chat') %>
+    <%- include('../partials/code-editor') %> 
+    <% } else { %>
+    <%- include('../partials/roomselect') %> 
+    <% } %>
   </main>
 
   <script src="/socket.io/socket.io.js"></script>

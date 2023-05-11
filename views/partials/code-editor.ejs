@@ -1,18 +1,26 @@
 <section
   class="content__modal content__modal--code"
   data-content-tab="code"
-  aria-hidden="<%- hidden %>">
-  <h1 class="title title--h1">CodeBase</h1>
+  aria-hidden="false">
   <!-- prettier-ignore -->
-  <%- include ("../components/text-editor") %>
-  <div class="editor">
-    <div class="line-numbers" style="display: none">
-      <span></span>
-    </div>
-    <textarea class="code" style="display: none">
-      <%- include ("../partials/html-template") %></textarea
-    >
-  </div>
-  <button class="cta cta--theme" data-code-run="">Run</button>
+  <%- include('../components/editor', {language: 'html'}) %> 
+  <%- include('../components/editor', {language: 'css'}) %> 
+  <%- include('../components/editor', {language: 'js'}) %>
+  <section class="editor__control">
+    <label class="control control--inline" for="style">
+      <span class="control__label"> Editor stijl </span>
+      <select
+        name="style"
+        data-editor-style
+        class="control__input control__input--small">
+        <option value="default">Standaard</option>
+      </select>
+    </label>
+    <button class="cta cta--theme cta--sec" data-code-export>
+      Exporteer code
+    </button>
+    <button class="cta cta--theme" data-code-run>Run</button>
+  </section>
   <iframe src="javascript:void(0);" data-iframe></iframe>
+  <footer></footer>
 </section>
