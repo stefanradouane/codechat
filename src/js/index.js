@@ -29,11 +29,10 @@ document.getElementById("chat-form")?.addEventListener("submit", (event) => {
 
 // Socket events
 
-socket.on("connect", () => {
+socket.once("connect", () => {
   socketIdSpan.innerText = socket.id;
 
   socket.emit("whoami", (user) => {
-    // console.log(user);
     usernameSpan.innerText = `${user.name} ${user.surname}`;
     createAvatar(user.avatar, avatarImg);
   });
