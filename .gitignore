@@ -109,3 +109,6 @@ DS_Store
 DS_Store/
 
 bin/
+
+# Public folder
+public/
