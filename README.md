@@ -8,14 +8,14 @@ Minor Web design and Development - 2022/2023
 
 Real Time Web - Respository - Minor: Web Design and Development
 
-## Inhoudsopgave
+<!-- ## Inhoudsopgave
 
 - [ℹ️ Over dit project](#ℹ️-over-dit-project)
 - [📥 Project installatie](#📥-project-installatie)
 - [🧠 Client-server rendering](#🧠-client-server-rendering)
 - [👷 Service worker](#👷-service-worker)
 - [🚑 App optimalisatie](#🚑-app-optimalisatie)
-- [📝 Criteria](#📝-criteria)
+- [📝 Criteria](#📝-criteria) -->
 
 ## ℹ️ Over dit project
 
@@ -463,4 +463,4 @@ Er zit helaas een vrij grote bug in mijn app. De y-webrtc module is onjuist inge
 
 Hier in deze demo is te zien hoe de app zou moeten werken.
 
-<video src='docs/test.mp4' width=180 >
+<video src='docs/demo.mov' >
