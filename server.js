@@ -31,8 +31,8 @@ const sessionMiddleware = session({
   saveUninitialized: false,
 });
 
-app.use(sessionMiddleware);
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -50,8 +50,6 @@ app.use("/", routes(passport, io));
 /*******************************************************
  * Socket.io
  *******************************************************/
-// const io = require("socket.io")(server);
-
 // convert a connect middleware to a Socket.IO middleware
 const wrap = (middleware) => (socket, next) =>
   middleware(socket.request, {}, next);

@@ -15,21 +15,21 @@ const run = document.querySelector("[data-code-run]");
 
 socket.on("connect", () => {
   socket.emit("whoami", (name) => {
-    function editors(type, lobby) {
+    function editors(type, room) {
       clearEditors();
       const theme = type;
-      const viewJS = editor(`${name.name} ${name.surname}`, "js", theme, lobby);
+      const viewJS = editor(`${name.name} ${name.surname}`, "js", theme, room);
       const viewHTML = editor(
         `${name.name} ${name.surname}`,
         "html",
         theme,
-        lobby
+        room
       );
       const viewCSS = editor(
         `${name.name} ${name.surname}`,
         "css",
         theme,
-        lobby
+        room
       );
 
       if (run) {

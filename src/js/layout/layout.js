@@ -19,6 +19,11 @@ if (btns) {
       content.className = "content";
       console.log(btn.dataset);
       content.classList.add(classes[btn.dataset.navControl]);
+
+      if (btn.dataset.navControl == "chat") {
+        const chatTab = document.querySelector("[data-nav-control='chat']");
+        chatTab.classList.remove("nav__list-control--new-message");
+      }
     });
   });
 }

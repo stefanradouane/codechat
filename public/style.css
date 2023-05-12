@@ -35,6 +35,10 @@ h1 {
   /* background: transparent; */
 }
 
+.content {
+  height: calc(100dvh - 62px);
+}
+
 .content__room-error {
   color: var(--white-color);
   display: flex;
@@ -49,6 +53,10 @@ h1 {
   flex-direction: column;
   gap: var(--base-offset);
   max-width: 300px;
+}
+
+.content__modal--chat {
+  height: calc(100dvh - 62px);
 }
 
 .content__modal--chat form {
