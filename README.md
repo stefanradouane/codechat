@@ -359,7 +359,7 @@ socket.on("whoami", (cb) => {
 Vervolgens wordt de chatgeschiedenis ontvangen door de client en wordt de chatgeschiedenis getoond.
 
 ```javascript
-// path: public/script.js
+// path: src/script.js
 socket.on("history", (history) => {
   history?.forEach((message) => {
     addMessage(message);
@@ -452,6 +452,66 @@ socket.on("activeUsers", (users) => {
 > In deze code kan je zien dat de client het event opvangt en de gebruikers eerst omzet in een unieke array. Deze unieke Array wordt gemaakt, omdat er voor elke gebruiker twee connecties bestaan. Een connectie van de server en de andere van de client. Vervolgens wordt de lijst getoond aan de gebruiker.
 
 <img src="docs/users.png">
+
+### Run editor
+
+Ik heb ook een functie gemaakt waarmee je de code kan runnen. De code wordt geplaatst in een iframe. Deze functie ziet er als volgt uit.
+
+```javascript
+// path: src/editor-run.js
+
+function runScript(viewJS, viewHTML, viewCSS) {
+  const value = {
+    html: viewHTML.state.doc.toString(),
+    css: viewCSS.state.doc.toString(),
+    js: viewJS.state.doc.toString(),
+  };
+
+  const iframe = document.querySelector("[data-iframe]");
+  const x = iframe.contentDocument;
+  const head = x.head;
+  const body = x.body;
+
+  head?.parentNode?.removeAttribute("style");
+  head?.removeAttribute("style");
+  body?.removeAttribute("style");
+
+  if (head.children.length >= 1) {
+    head.removeChild(head.children[0]);
+  }
+  head.appendChild(
+    Object.assign(document.createElement("style"), {
+      classList: "stylesheet-editor",
+      innerHTML: value.css,
+    })
+  );
+
+  const main = Object.assign(document.createElement("main"), {
+    classList: "html-editor",
+    innerHTML: value.html,
+  });
+
+  const newScript = Object.assign(document.createElement("script"), {
+    classList: "script-editor",
+    innerHTML: baseScript(value.js),
+    defer: true,
+  });
+
+  function baseScript(script) {
+    return "(function() {" + script + "})()";
+  }
+  var oldScript = body.querySelector("script");
+  if (oldScript) {
+    oldScript.parentNode.removeChild(oldScript);
+  }
+  body.innerHTML = main.outerHTML;
+  body.appendChild(newScript);
+}
+```
+
+> In de code is te zien dat de waardes van de Editors wordt opgeslagen in een variable. Vervolgens wordt de iframe opgehaald en de head en body van de iframe. De head wordt leeggemaakt en de nieuwe waardes worden toegevoegd. Vervolgens wordt de body leeggemaakt en de nieuwe waardes toegevoegd. Als laatste wordt de nieuwe script toegevoegd aan de body. Het script wordt in een closure geplaatst, zodat de variabelen niet in de globale scope komen te staan.<b> Dit zorgt ervoor dat de code niet conflicteerd met de code van de app of vorige gerunde versies</b>.
+
+<video src="docs/run.mp4">
 
 ## Activity Diagram
 

@@ -6,7 +6,6 @@
  */
 
 export function messageToHtml(message, isSelf) {
-  console.log(message, isSelf);
   return `
         <p class="message__user">${isSelf ? "U" : message.username}</p>
         <p class="message__content">${message.message}</p>

@@ -8,6 +8,11 @@ function runScript(viewJS, viewHTML, viewCSS) {
   const iframe = document.querySelector("[data-iframe]");
   const x = iframe.contentDocument;
   const head = x.head;
+  const body = x.body;
+
+  head?.parentNode?.removeAttribute("style");
+  head?.removeAttribute("style");
+  body?.removeAttribute("style");
 
   if (head.children.length >= 1) {
     head.removeChild(head.children[0]);
@@ -18,8 +23,6 @@ function runScript(viewJS, viewHTML, viewCSS) {
       innerHTML: value.css,
     })
   );
-
-  const body = x.body;
 
   const main = Object.assign(document.createElement("main"), {
     classList: "html-editor",

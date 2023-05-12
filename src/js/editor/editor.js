@@ -2,16 +2,14 @@ import { clearEditors, filteredThemes, styleOptions } from "./editor-config.js";
 import editor from "./editor-editor.js";
 import runScript from "./editor-run.js";
 
+const socket = io();
+const run = document.querySelector("[data-code-run]");
 const styleSelect = document.querySelector("[data-editor-style]");
 const defaultStyle = "abcdef";
 
 if (styleSelect) {
   styleSelect.append(...styleOptions(defaultStyle));
 }
-
-const socket = io();
-
-const run = document.querySelector("[data-code-run]");
 
 socket.on("connect", () => {
   socket.emit("whoami", (name) => {
@@ -33,9 +31,9 @@ socket.on("connect", () => {
       );
 
       if (run) {
-        run.addEventListener("click", () =>
-          runScript(viewJS, viewHTML, viewCSS)
-        );
+        run.addEventListener("click", () => {
+          runScript(viewJS, viewHTML, viewCSS);
+        });
       }
     }
 
