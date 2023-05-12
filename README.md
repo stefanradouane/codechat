@@ -461,6 +461,8 @@ socket.on("activeUsers", (users) => {
 
 Er zit helaas een vrij grote bug in mijn app. De y-webrtc module is onjuist ingesteld en zorgd voor problemen. Ik heb geprobeerd om dit op te lossen, maar het is mij helaas niet gelukt door de tijd. De bug is het volgende, de webrtc doet het alleen op hetzelfde device. Op het moment dat je met meerdere devices connect dan doet de WebRTC het niet... De app werkt dus wel helemaal correct op 1 device, maar niet met meerdere devices samen.
 
+## :tada: Demo
+
 Hier in deze demo is te zien hoe de app zou moeten werken.
 
-<video src='docs/demo.mov' >
+https://github.com/stefanradouane/codechat/assets/94455025/443b7700-640c-4cbb-a2d4-9a0514860949
