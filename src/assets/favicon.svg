@@ -1,0 +1,75 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  class="logo logo--big"
+  viewBox="0 0 102.53 75.98">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient);
+      }
+      .cls-2 {
+        fill: url(#linear-gradient-3);
+      }
+      .cls-3 {
+        fill: url(#linear-gradient-4);
+      }
+      .cls-4 {
+        fill: url(#linear-gradient-2);
+      }
+    </style>
+    <linearGradient
+      id="linear-gradient"
+      x1="4.79"
+      y1="49.41"
+      x2="47.23"
+      y2="16.37"
+      gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5d00f8"></stop>
+      <stop offset=".36" stop-color="#6702f9"></stop>
+      <stop offset=".98" stop-color="#8309fe"></stop>
+      <stop offset="1" stop-color="#850aff"></stop>
+    </linearGradient>
+    <linearGradient
+      id="linear-gradient-2"
+      x1="7.26"
+      y1="46.92"
+      x2="32.42"
+      y2="58.3"
+      gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#090066"></stop>
+      <stop offset="1" stop-color="#5724ca"></stop>
+    </linearGradient>
+    <linearGradient
+      id="linear-gradient-3"
+      x1="61.27"
+      y1="53.86"
+      x2="105.39"
+      y2="23.11"
+      gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f0f"></stop>
+      <stop offset="1" stop-color="#c500d2"></stop>
+    </linearGradient>
+    <linearGradient
+      id="linear-gradient-4"
+      x1="72.33"
+      y1="13.93"
+      x2="82.3"
+      y2="25.65"
+      gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c500d2"></stop>
+      <stop offset="1" stop-color="#8c00a7"></stop>
+    </linearGradient>
+  </defs>
+  <polygon
+    class="cls-1"
+    points="53.78 0 0 37.99 15.48 53.47 53.78 26.41 53.78 0"></polygon>
+  <polygon
+    class="cls-4"
+    points="15.48 53.47 24.74 62.73 24.74 46.93 15.48 53.47"></polygon>
+  <polygon
+    class="cls-2"
+    points="48.74 75.98 102.53 37.99 87.05 22.51 48.74 49.57 48.74 75.98"></polygon>
+  <polygon
+    class="cls-3"
+    points="87.05 22.51 77.79 13.25 77.79 29.05 87.05 22.51"></polygon>
+</svg>

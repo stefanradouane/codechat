@@ -1,7 +1,4 @@
-// import path from "path";
-
 const path = require("path");
-
 /**
  * Webpack configuration
  * Run using "webpack" or "npm run build"
@@ -35,7 +32,6 @@ module.exports = {
     ],
   },
 
-  // Use --production to optimize output.
   // mode: isProduction ? 'production' : 'development',
-  mode: "development",
+  mode: "production",
 };

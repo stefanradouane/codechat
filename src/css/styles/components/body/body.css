@@ -1,0 +1,127 @@
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--body-font);
+  /* overflow: hidden; */
+  min-height: 100vh;
+  min-width: 100vw;
+  background: rgb(239, 238, 238);
+  /* background: rgba(188, 105, 138, 0.5); */
+  background-image: radial-gradient(
+      circle at bottom left,
+      var(--dark-color),
+      var(--sec-color)
+    ),
+    radial-gradient(circle at top left, var(--dark-color), #0a001a 100%),
+    radial-gradient(
+      circle at center right,
+      var(--sec-color),
+      var(--dark-color) 100%
+    );
+  background-size: 200% 200%;
+  animation: movement 30s ease infinite alternate-reverse;
+}
+
+@keyframes movement {
+  0% {
+    background-position: 0% 0%;
+  }
+  25% {
+    background-position: 50% 0%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+body:has(.login) {
+  display: flex;
+  height: 100%;
+  place-items: center;
+}
+
+.page {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas: "header header" "sidebar content";
+}
+
+.page .header {
+  grid-area: header;
+}
+.page .sidebar {
+  grid-area: sidebar;
+}
+.page .content {
+  grid-area: content;
+  background-color: rgba(var(--dark-color-rgb), 0.1);
+  height: calc(100dvh - 62px);
+}
+
+.content__modal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.content__modal .chat {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.content__modal--code {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr 1fr 1fr;
+  grid-template-areas:
+    "run run"
+    "html output"
+    "css output"
+    "js output";
+}
+
+.content__modal--code .title {
+  grid-area: title;
+}
+
+.content__modal--code .editor--html {
+  grid-area: html;
+}
+.content__modal--code .editor--css {
+  grid-area: css;
+}
+.content__modal--code .editor--js {
+  grid-area: js;
+}
+
+.content__modal .editor__control {
+  display: flex;
+  grid-area: run;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.content__modal .editor__control [data-code-run] {
+  margin-left: auto;
+}
+
+.content__modal--code iframe {
+  grid-area: output;
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  /* display: none; */
+}
