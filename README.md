@@ -511,7 +511,7 @@ function runScript(viewJS, viewHTML, viewCSS) {
 
 > In de code is te zien dat de waardes van de Editors wordt opgeslagen in een variable. Vervolgens wordt de iframe opgehaald en de head en body van de iframe. De head wordt leeggemaakt en de nieuwe waardes worden toegevoegd. Vervolgens wordt de body leeggemaakt en de nieuwe waardes toegevoegd. Als laatste wordt de nieuwe script toegevoegd aan de body. Het script wordt in een closure geplaatst, zodat de variabelen niet in de globale scope komen te staan.<b> Dit zorgt ervoor dat de code niet conflicteerd met de code van de app of vorige gerunde versies</b>.
 
-<video src="docs/run.mp4" />
+https://github.com/stefanradouane/codechat/assets/94455025/09d0ce13-134e-42e0-aafe-00583d691b33
 
 ## Activity Diagram
 
