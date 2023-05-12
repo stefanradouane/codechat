@@ -114,7 +114,7 @@ body:has(.login) {
   gap: 10px;
 }
 
-.content__modal .editor__control [data-code-export] {
+.content__modal .editor__control [data-code-run] {
   margin-left: auto;
 }
 

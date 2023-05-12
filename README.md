@@ -148,6 +148,8 @@ Voor deze inlog functie heb ik de volgende modules/packages gebruikt:
 - [express-flash](https://www.npmjs.com/package/express-flash) | Flash messages
 - [node-fetch](https://www.npmjs.com/package/node-fetch) | Fetch
 
+<img src="docs/login.png">
+
 ### Room selectie
 
 De gebruiker kan een room joinen door de naam van de room in te typen. De room wordt bepaald op basis van de query. Een voorbeeld hiervan is `?room=test`, de huidige roomnaam is dan test. Ik heb de volgende code gebruikt om te checken of de gebruiker in een room zit.
@@ -172,6 +174,8 @@ Ik heb de volgende modules/packages gebruikt voor de room selectie:
 
 - [Express](https://expressjs.com/) | Server
 - [EJS](https://ejs.co/) | Templating
+
+<img src="docs/room-select.png">
 
 ### Code editor
 
@@ -242,15 +246,221 @@ Ik heb de volgende modules/packages gebruikt voor de code editor:
 - [Yjs](https://www.npmjs.com/package/yjs) | WebRTC document
 - [Y-WebRTC](https://www.npmjs.com/package/y-webrtc) | WebRTC
 
+<img src="docs/code.png">
+
 ### Chat
 
 De gebruiker kan chatten met de andere gebruikers in de room. De chat wordt realtime gesynchroniseerd met de andere gebruikers in de room. De chat wordt gesynchroniseerd met [socket.io](https://socket.io/). Ik heb de volgende code gebruikt om de chat te synchroniseren. Dit gedeelte bestaat uit twee onderdelen. Dit zijn:
 
 - De chat
 - De chat geschiedenis
+- Chat melding
 
-Ik heb de volgende code gebruikt om de chat te initialiseren. Ik heb hiervoor een chat functie gemaakt die
+Ik heb de volgende code gebruikt voor het versturen van meldingen en ontvangen van de melding op de server.
+
+<!-- Ik heb de volgende code gebruikt om de chat te initialiseren. Ik heb hiervoor een chat functie gemaakt die -->
 
 ```javascript
-// path: src/js/chat.js
+document.getElementById("chat-form")?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  if (input.value) {
+    socket.emit("message", {
+      message: input.value,
+      username: usernameSpan.innerText,
+      date: new Intl.DateTimeFormat("nl-NL", {
+        hour: "numeric",
+        minute: "numeric",
+      }).format(Date.now()),
+      room: new URL(window.location.href).searchParams.get("room"),
+    });
+    input.value = "";
+  }
+});
 ```
+
+> Het bericht wordt verzonden naar de server in het volgende formaat.
+
+```JSON
+{
+  "message": "Dit is een bericht",
+  "username": "Voornaam Achternaam",
+  "date": "12:00",
+  "room": "room"
+}
+```
+
+Vervolgens komt deze melding binnen op de server.
+
+```javascript
+// path: server.js
+socket.on("message", (message) => {
+  while (history[message.room]?.length > historySize) {
+    history.shift();
+  }
+  history[message.room] = !history[message.room] ? [] : history[message.room];
+  history[message.room].push(message);
+
+  io.emit("message", message);
+});
+```
+
+> In de code staat dat op het moment dat een bericht wordt verzonden deze message wordt opgeslagen in de history van de chat. Vervolgens wordt de message verzonden naar de connecties.
+
+Ik heb de volgende code gebruikt voor het tonen van het bericht.
+
+```javascript
+socket.on("message", (message) => {
+  addMessage(message);
+
+  const isOpen = document.querySelector(".content--chat");
+  if (!isOpen) {
+    const chatTab = document.querySelector("[data-nav-control='chat']");
+    chatTab.classList.add("nav__list-control--new-message");
+  }
+});
+
+function addMessage(message) {
+  const messageN = message.username;
+  const usernameN = usernameSpan.innerText;
+  const isSelf = messageN == usernameN;
+  const className = isSelf ? "message message--own" : "message";
+
+  chat.appendChild(
+    Object.assign(document.createElement("li"), {
+      classList: className,
+      innerHTML: messageToHtml(message, isSelf),
+    })
+  );
+  chat.scrollTop = chat.scrollHeight;
+}
+```
+
+<img src="docs/chat.png">
+
+#### Chatgeschiedenis
+
+Om de juiste chatgeschiedenis naar de client te sturen heb ik de volgende functie geschreven.
+
+```javascript
+// path: server.js
+
+socket.on("whoami", (cb) => {
+  cb(socket.request.user ? socket.request.user : "");
+
+  socket.emit(
+    "history",
+    history[new URL(socket.handshake.headers.referer).searchParams.get("room")]
+  );
+});
+```
+
+> Het whoami event wordt door de server verzonden als er er een nieuwe connectie is. De server stuurt de chatgeschiedenis naar de client.
+
+Vervolgens wordt de chatgeschiedenis ontvangen door de client en wordt de chatgeschiedenis getoond.
+
+```javascript
+// path: public/script.js
+socket.on("history", (history) => {
+  history?.forEach((message) => {
+    addMessage(message);
+  });
+});
+
+socket.emit("whoami", (user) => {
+  usernameSpan.innerText = `${user.name} ${user.surname}`;
+  createAvatar(user.avatar, avatarImg);
+});
+
+/**
+ * Replace the avatar image source or to an emoji
+ * @param {String | String[]} avatar
+ * @param {Element} avatarImg
+ */
+export function createAvatar(avatar, avatarImg) {
+  if (avatar.startsWith(`https://`) || avatar.startsWith(`http://`)) {
+    avatarImg.src = avatar;
+  } else {
+    const parsedEmoji = JSON.parse(avatar.replaceAll(`'`, `"`));
+    const emoji = parsedEmoji[Math.floor(Math.random() * parsedEmoji.length)];
+    avatarImg.parentElement.replaceChild(
+      Object.assign(document.createElement("div"), {
+        classList: avatarImg.classList,
+        innerHTML: emoji,
+      }),
+      avatarImg
+    );
+  }
+}
+```
+
+### Actieve gebruikers van de app
+
+De actieve gebruikers van de app worden getoond in een eigen tab. Je kan van de gebruiker zien in welke lobby hij/zij zit en naar deze lobby toe navigeren.
+
+```javascript
+// path: server.js
+
+io.fetchSockets().then((data) => {
+  io.emit(
+    "activeUsers",
+    data.map((ios) => {
+      return {
+        id: ios.id,
+        user: ios.request.user,
+        room: new URL(ios.handshake.headers.referer).searchParams.get("room"),
+      };
+    })
+  );
+});
+```
+
+> In de code kan je zien dat de server de actieve gebruikers ophaalt en deze naar de client stuurt.
+
+```javascript
+// path: src/script.js
+
+socket.on("activeUsers", (users) => {
+  const uniqueArray = users.filter((item, index, self) => {
+    return (
+      index ===
+      self.findIndex((obj) => {
+        return obj.userName === item.userName && obj.room === item.room;
+      })
+    );
+  });
+
+  document.querySelector("[data-users]")
+    ? Array.from(document.querySelector("[data-users]")?.children).forEach(
+        (child) => {
+          child.remove();
+        }
+      )
+    : undefined;
+
+  uniqueArray.forEach((user) => {
+    if (user.room)
+      document.querySelector("[data-users]")?.appendChild(
+        Object.assign(document.createElement("li"), {
+          classList: "connection connection--connected",
+          innerHTML: `${user.user.name} ${user.user.surname} <a class="connection__room" href="/?room=${user.room}">${user.room}</a>`,
+        })
+      );
+  });
+});
+```
+
+> In deze code kan je zien dat de client het event opvangt en de gebruikers eerst omzet in een unieke array. Deze unieke Array wordt gemaakt, omdat er voor elke gebruiker twee connecties bestaan. Een connectie van de server en de andere van de client. Vervolgens wordt de lijst getoond aan de gebruiker.
+
+<img src="docs/users.png">
+
+## Activity Diagram
+
+<img src="docs/activity-diagram.png">
+
+## :bug: WebRTC Bug
+
+Er zit helaas een vrij grote bug in mijn app. De y-webrtc module is onjuist ingesteld en zorgd voor problemen. Ik heb geprobeerd om dit op te lossen, maar het is mij helaas niet gelukt door de tijd. De bug is het volgende, de webrtc doet het alleen op hetzelfde device. Op het moment dat je met meerdere devices connect dan doet de WebRTC het niet... De app werkt dus wel helemaal correct op 1 device, maar niet met meerdere devices samen.
+
+Hier in deze demo is te zien hoe de app zou moeten werken.
+
+<video src='docs/test.mp4' width=180 >

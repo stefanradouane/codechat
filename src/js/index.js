@@ -1,25 +1,17 @@
 import "./editor/editor.js";
 import "./layout/layout.js";
+import { createAvatar, messageToHtml } from "./lib/utils.js";
 
 const socket = io();
 const socketIdSpan = document.getElementById("socketId");
 const usernameSpan = document.getElementById("username");
 const avatarImg = document.getElementById("avatar");
-
-socket.on("connect", () => {
-  socketIdSpan.innerText = socket.id;
-
-  socket.emit("whoami", (user) => {
-    // console.log(user);
-    usernameSpan.innerText = `${user.name} ${user.surname}`;
-    createAvatar(user.avatar);
-  });
-});
-
 let chat = document.querySelector(".chat");
 let input = document.querySelector("input");
 
-document.getElementById("test")?.addEventListener("submit", (event) => {
+// Submit message
+
+document.getElementById("chat-form")?.addEventListener("submit", (event) => {
   event.preventDefault();
   if (input.value) {
     socket.emit("message", {
@@ -33,6 +25,18 @@ document.getElementById("test")?.addEventListener("submit", (event) => {
     });
     input.value = "";
   }
+});
+
+// Socket events
+
+socket.on("connect", () => {
+  socketIdSpan.innerText = socket.id;
+
+  socket.emit("whoami", (user) => {
+    // console.log(user);
+    usernameSpan.innerText = `${user.name} ${user.surname}`;
+    createAvatar(user.avatar, avatarImg);
+  });
 });
 
 socket.on("history", (history) => {
@@ -60,16 +64,17 @@ socket.on("activeUsers", (users) => {
     : undefined;
 
   uniqueArray.forEach((user) => {
-    document.querySelector("[data-users]")?.appendChild(
-      Object.assign(document.createElement("li"), {
-        classList: "connection connection--connected",
-        innerHTML: `${user.user.name} ${
-          user.user.surname
-        } <span class="connection__room">Room: ${
-          user.room == null ? "lobby" : user.room
-        }</span>`,
-      })
-    );
+    if (user.room)
+      document.querySelector("[data-users]")?.appendChild(
+        Object.assign(document.createElement("li"), {
+          classList: "connection connection--connected",
+          innerHTML: `${user.user.name} ${
+            user.user.surname
+          } <a class="connection__room" href="/?room=${
+            user.room ? user.room : ""
+          }">${user.room == null ? "lobby" : user.room}</a>`,
+        })
+      );
   });
 });
 
@@ -77,20 +82,11 @@ socket.on("message", (message) => {
   addMessage(message);
 
   const isOpen = document.querySelector(".content--chat");
-  console.log(isOpen);
   if (!isOpen) {
     const chatTab = document.querySelector("[data-nav-control='chat']");
     chatTab.classList.add("nav__list-control--new-message");
   }
 });
-
-function messageToHtml(message, isSelf) {
-  console.log(message, isSelf);
-  return `
-      <p class="message__user">${isSelf ? "U" : message.username}</p>
-      <p class="message__content">${message.message}</p>
-      <p class="message__date">${message.date}</p>`;
-}
 
 function addMessage(message) {
   const messageN = message.username;
@@ -105,20 +101,4 @@ function addMessage(message) {
     })
   );
   chat.scrollTop = chat.scrollHeight;
-}
-
-function createAvatar(avatar) {
-  if (avatar.startsWith(`https://`) || avatar.startsWith(`http://`)) {
-    avatarImg.src = avatar;
-  } else {
-    const parsedEmoji = JSON.parse(avatar.replaceAll(`'`, `"`));
-    const emoji = parsedEmoji[Math.floor(Math.random() * parsedEmoji.length)];
-    avatarImg.parentElement.replaceChild(
-      Object.assign(document.createElement("div"), {
-        classList: avatarImg.classList,
-        innerHTML: emoji,
-      }),
-      avatarImg
-    );
-  }
 }

@@ -39,6 +39,10 @@ h1 {
   height: calc(100dvh - 62px);
 }
 
+.page:has(.content__room-error) .sidebar {
+  display: none;
+}
+
 .content__room-error {
   color: var(--white-color);
   display: flex;

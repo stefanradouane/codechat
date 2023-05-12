@@ -1,5 +1,5 @@
 import * as Y from "yjs";
-import { WebrtcProvider } from "y-webrtc";
+import { WebrtcProvider, y } from "y-webrtc";
 import { html } from "@codemirror/lang-html";
 import { css } from "@codemirror/lang-css";
 import { javascript } from "@codemirror/lang-javascript";

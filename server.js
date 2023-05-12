@@ -67,22 +67,17 @@ io.use((socket, next) => {
 });
 
 io.on("connection", (socket) => {
-  console.log(`new connection ${socket.id}`);
-  let v;
-
-  async function emitConnections(data) {
-    v = data.map((ios) => {
-      return {
-        id: ios.id,
-        user: ios.request.user,
-        room: new URL(ios.handshake.headers.referer).searchParams.get("room"),
-      };
-    });
-    io.emit("activeUsers", v);
-  }
-
   io.fetchSockets().then((data) => {
-    emitConnections(data);
+    io.emit(
+      "activeUsers",
+      data.map((ios) => {
+        return {
+          id: ios.id,
+          user: ios.request.user,
+          room: new URL(ios.handshake.headers.referer).searchParams.get("room"),
+        };
+      })
+    );
   });
 
   socket.on("whoami", (cb) => {
