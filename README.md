@@ -515,6 +515,8 @@ function runScript(viewJS, viewHTML, viewCSS) {
 
 ## Activity Diagram
 
+Hieronder is de activity diagram te zien van de app.
+
 <img src="docs/activity-diagram.png">
 
 ## :bug: WebRTC Bug
